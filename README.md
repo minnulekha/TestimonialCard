@@ -1,5 +1,6 @@
 ✨ Aura Testimonials
 Aura Testimonials is a premium, high-fidelity testimonial card generator designed for creators, entrepreneurs, and developers. It allows users to build stunning, professional-grade social proof cards and export them as ultra-sharp PNG images in seconds.
+
 <img width="1071" height="584" alt="image" src="https://github.com/user-attachments/assets/61cc8021-f021-4865-a906-4f6c0f45eab1" />
 
 🚀 Features
