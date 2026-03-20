@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final ScaleX Testimonial Generator</title>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <style>
+        /* Modern, professional font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        body {
+            background: #0d0d0d; /* Slightly lighter black for contrast */
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 🔧 PRO CONTROLS */
+        .controls {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #2a2a2a;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 60px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-sizing: border-box;
+        }
+
+        .controls h2 {
+            margin-top: 0;
+            color: #FFBF23;
+            font-size: 1.4rem;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .form-label {
+            display: block;
+            margin: 15px 0 5px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #888;
+            letter-spacing: 0.5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            margin-top: 5px;
+            padding: 14px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            border: 1px solid #333;
+            outline: none;
+            background: #0d0d0d;
+            color: white;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #FFBF23;
+        }
+
+        textarea {
+            height: 110px;
+            resize: none;
+            line-height: 1.5;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background: #FFBF23;
+            color: black;
+        }
+
+        .add-btn:hover {
+            background: #e5ac1f;
+            transform: translateY(-2px);
+        }
+
+        .dl-btn {
+            background: #2a2a2a;
+            color: #FFBF23;
+            border: 2px solid #FFBF23;
+        }
+
+        .dl-btn:hover {
+            background: #FFBF23;
+            color: black;
+        }
+
+        /* 📦 CARDS GRID */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        /* 🔥 CORRECTED CARD STYLE */
+        /*
+          THE FIX: The border is applied here, on the SAME element as the border-radius.
+          `overflow: hidden` ensures the content inside strictly respects the curve,
+          preventing any black bleed-out at the corners.
+        */
+        .testimonial-card {
+            background: #000;
+            padding: 45px 35px;
+            
+            /* THESE VALUES MUST MATCH TO ELIMINATE THE RECTANGLE BLEED */
+            border-radius: 36px; /* High radius for deep curve */
+            border: 2px solid #FFBF23; /* Border applied directly */
+            overflow: hidden; /* THE CRITICAL PART - clip the content precisely */
+
+            width: 380px; /* Reference Width */
+            min-height: 260px; /* Reference Height */
+            
+            box-shadow: 0 10px 40px rgba(255, 191, 35, 0.08);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            position: relative;
+            transition: 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            box-shadow: 0 15px 50px rgba(255, 191, 35, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* 👤 PROFILE */
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .profile img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FFBF23;
+            background: #222;
+        }
+
+        /* ✍️ TEXT STYLES */
+        .name {
+            font-weight: 700;
+            font-size: 20px;
+            color: #FFBF23;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+
+        .role {
+            font-size: 15px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .testimonial-text {
+            font-size: 15px;
+            line-height: 1.75;
+            color: #eee;
+            margin-top: 5px;
+            font-weight: 400;
+            letter-spacing: 0.1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="controls">
+        <h2>ScaleX Card Creator</h2>
+        
+        <label class="form-label">Full Name</label>
+        <input type="text" id="nameInput" placeholder="e.g. Rajiv Talreja">
+        
+        <label class="form-label">Title / Role</label>
+        <input type="text" id="roleInput" placeholder="e.g. Business Coach">
+        
+        <label class="form-label">The Testimonial</label>
+        <textarea id="textInput" placeholder="Describe the result..."></textarea>
+        
+        <label class="form-label">Profile Image (optional)</label>
+        <input type="file" id="imageInput" accept="image/*">
+
+        <div class="btn-group">
+            <button class="add-btn" onclick="addCard()">Add Card</button>
+            <button class="dl-btn" onclick="downloadAll()">Download All</button>
+        </div>
+    </div>
+
+    <div class="container" id="cardContainer">
+        </div>
+
+    <script>
+        function addCard() {
+            const nameInput = document.getElementById("nameInput");
+            const roleInput = document.getElementById("roleInput");
+            const textInput = document.getElementById("textInput");
+            const imageInput = document.getElementById("imageInput");
+
+            const name = nameInput.value || "Your Name";
+            const role = roleInput.value || "Your Role";
+            const text = textInput.value || "Testimonial text goes here. The card will now draw the curve from the actual yellow border, leaving no black corners bleeding out.";
+            const file = imageInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    createCard(name, role, text, e.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Default placeholder image
+                createCard(name, role, text, "https://via.placeholder.com/150/222/FFBF23?text=Profile");
+            }
+
+            // Optional: Auto-clear form after addition
+            nameInput.value = "";
+            roleInput.value = "";
+            textInput.value = "";
+            imageInput.value = "";
+        }
+
+        function createCard(name, role, text, image) {
+            const card = document.createElement("div");
+            card.className = "testimonial-card";
+
+            card.innerHTML = `
+                <div class="profile">
+                    <img src="${image}" alt="${name}">
+                    <div>
+                        <p class="name">${name}</p>
+                        <p class="role">${role}</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">${text}</div>
+            `;
+
+            document.getElementById("cardContainer").appendChild(card);
+        }
+
+        function downloadAll() {
+            const cards = document.querySelectorAll(".testimonial-card");
+            if (cards.length === 0) {
+                alert("Please add at least one card first!");
+                return;
+            }
+
+            cards.forEach((card, index) => {
+                // scale: 4 for ultimate crispness on high-res displays
+                html2canvas(card, { 
+                    scale: 4, 
+                    backgroundColor: null, /* CRITICAL: Must be null to respect the parent's radius/overflow */
+                    logging: false,
+                    useCORS: true 
+                }).then(canvas => {
+                    const link = document.createElement("a");
+                    link.download = `ScaleX_testimonial_${index + 1}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>
